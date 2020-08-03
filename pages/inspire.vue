@@ -129,7 +129,7 @@
           endDate += '0'
           endDate += ''+this.day
         }
-        this.$axios.$get('mobile-ui/user/api/labResult/v1/11100079/4D327846374871776C5434693072324D65444E7854413D3D?startDt=20200701&endDt='+endDate,config)
+        this.$axios.$get('/mobile-ui/user/api/labResult/v1/11100079/4D327846374871776C5434693072324D65444E7854413D3D?startDt=20200701&endDt='+endDate,config)
             .then((result) => {
               var map = {}
               for(var num in result.body){
