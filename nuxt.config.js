@@ -48,6 +48,8 @@ export default {
   */
   buildModules: [
     '@nuxtjs/vuetify',
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy',
   ],
   /*
   ** Nuxt.js modules
@@ -72,6 +74,20 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         }
+      }
+    }
+  },
+  axios: {
+    baseURL: 'https://mcare.lemonhc.com',
+    proxyHeaders: false,
+    credentials: false,
+    proxy: true,
+  },
+  proxy: {
+    '/mobile-ui': {
+      target: 'https://mcare.lemonhc.com',
+      pathRewrite: {
+        '/mobile-ui/^' : '/mobile-ui/refresh/oauth/token'
       }
     }
   },
