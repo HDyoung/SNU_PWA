@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
+    "build": "API_URL_BROWSER=https://mcare.lemonhc.com build --modern=server",
+    "start": "API_URL_BROWSER=https://mcare.lemonhc.com start --modern=server",
     "generate": "nuxt generate"
   },
   "dependencies": {
