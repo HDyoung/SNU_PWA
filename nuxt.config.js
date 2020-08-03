@@ -81,7 +81,7 @@ export default {
     baseURL: 'https://mcare.lemonhc.com',
     proxyHeaders: false,
     credentials: false,
-    proxy: true,
+    proxy: false,
   },
   proxy: {
     '/mobile-ui': {
