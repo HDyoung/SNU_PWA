@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "API_URL_BROWSER=https://mcare.lemonhc.com nuxt",
+    "dev": "nuxt",
     "build": "API_URL_BROWSER=https://mcare.lemonhc.com build --modern=server",
     "start": "API_URL_BROWSER=https://mcare.lemonhc.com start --modern=server",
     "generate": "nuxt generate"
