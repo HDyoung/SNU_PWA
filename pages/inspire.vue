@@ -29,6 +29,7 @@
         </v-col>
         <div class="my-2">
           <v-btn class="ma-2" outlined color="indigo" v-on:click="apply">Apply</v-btn>
+          <v-btn class="ma-2" outlined color="teal" v-on:click="clear">Clear</v-btn>
         </div>
         <div>
           <draw-chart v-for="item in selectedCodeToBlood" :dateArr ="item.xArr" :yArr="item.yArr" :yName="item.yName" :yMin="item.yMin" :yMax="item.yMax" :unit="item.unit"></draw-chart>
@@ -146,46 +147,56 @@
                 if(isNaN(val)) {
                   continue;
                 }
-                if(code in this.liverCode || val < min || val > max){
-                  if(!(code in map)){
-                    map[code] = {};
-                  }
-                  let subMap = map[code];
-                  if(!('time' in subMap)){
-                    subMap.time = {};
-                  }
-                  subMap.time[date] = val;
-                  if(!('yName' in subMap)){
-                    subMap.yName = name +"_"+range;
-                    subMap.yMin = min;
-                    subMap.yMax = max;
-                    subMap.unit = unit;
-                    subMap.range = range;
-                  }
+                if(!(code in map)){
+                  map[code] = {};
+                }
+                let subMap = map[code];
+                if(!('time' in subMap)){
+                  subMap.time = {};
+                }
+                subMap.time[date] = val;
+                if(!('yName' in subMap)){
+                  subMap.yName = name +"_"+range;
+                  subMap.yMin = min;
+                  subMap.yMax = max;
+                  subMap.unit = unit;
+                  subMap.range = range;
                 }
               }
-              console.log(map);
               //remove good elements
               for(var code in map){
                 var item = map[code];
                 var dateArr = Object.keys(item.time).sort();
                 var lastVal = item.time[dateArr[dateArr.length-1]];
 
-                if(code in this.liverCode || lastVal < item.yMin || lastVal > item.yMax){
-                  let xArr = [];
-                  let yArr = [];
-                  for(let i=0; i<dateArr.length; i++){
-                    let d = new Date(Number(dateArr[i]));
-                    let x = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+                let xArr = [];
+                let yArr = [];
+                for(let i=0; i<dateArr.length; i++){
+                  let d = new Date(Number(dateArr[i]));
+                  let x = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
 
-                    let v = item.time[dateArr[i]]
-                    yArr.push(v);
-                    xArr.push(x);
-                  }
-                  item.yArr = yArr;
-                  item.xArr = xArr;
-                  this.codeToBlood[code] = item;
+                  let v = item.time[dateArr[i]]
+                  yArr.push(v);
+                  xArr.push(x);
                 }
+                item.yArr = yArr;
+                item.xArr = xArr;
+                this.codeToBlood[code] = item;
+                // if(code in this.liverCode || lastVal < item.yMin || lastVal > item.yMax){
+                //   let xArr = [];
+                //   let yArr = [];
+                //   for(let i=0; i<dateArr.length; i++){
+                //     let d = new Date(Number(dateArr[i]));
+                //     let x = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+                //
+                //     let v = item.time[dateArr[i]]
+                //     yArr.push(v);
+                //     xArr.push(x);
+                //   }
+                //   item.yArr = yArr;
+                //   item.xArr = xArr;
+                //   this.codeToBlood[code] = item;
+                // }
               }
 
               let keys = Object.keys(this.codeToBlood);
@@ -211,6 +222,11 @@
           this.selectedCodeToBlood.push(this.codeToBlood[this.selectedNotLiver[i]]);
         }
         console.log(this.selectedCodeToBlood)
+      },
+      clear:function () {
+        this.selectedCodeToBlood = [];
+        this.selectedLiver=  [];
+        this.selectedNotLiver = [];
       }
     }
   }

@@ -81,12 +81,11 @@ export default {
     baseURL: 'https://mcare.lemonhc.com',
     proxyHeaders: false,
     credentials: false,
-    proxy: true,
+    proxy: false,
   },
   proxy: {
     '/mobile-ui': {
       target: 'https://mcare.lemonhc.com',
-      browserBaseURL: 'https://mcare.lemonhc.com',
       pathRewrite: {
         '/mobile-ui/^' : '/mobile-ui/refresh/oauth/token'
       }
