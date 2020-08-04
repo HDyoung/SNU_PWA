@@ -3,6 +3,7 @@
     <v-app v-if="loading">
       <v-main>
         <v-container>얼릉 회복합시다 {{year}}-{{month}}-{{day}}</v-container>
+<!--        <button @click="$store.commit('increment')">{{ $store.state.token }}</button>-->
         <v-col cols="12">
           <v-autocomplete
             v-model="selectedLiver"
@@ -46,7 +47,9 @@
 <script>
   import LineChart from '@/pages/LineChart'
   import DrawChart from '@/pages/DrawChart'
+  import { mapGetters, mapActions } from 'vuex'
   import qs from "querystring";
+  import axios from "axios";
 
 
   export default {
@@ -56,7 +59,7 @@
       DrawChart
     },
     data: () => ({
-      loading: false,
+      loading: true,
       selectedLiver: [],
       selectedNotLiver: [],
       notliverItems: [],
@@ -77,18 +80,18 @@
       token: "",
     }),
     created: function () {
+      // this.$store.dispatch('getToken').then(()  =>{
+      //   console.log("data: "+this.$store.getters['token'])
+      //   this.$store.dispatch('getData', this.$store.getters['token'])
+      // });
+
       let now = new Date();
       this.year = now.getFullYear();
       this.month = now.getMonth()+1;
       this.day = now.getDate();
       this.$vuetify.theme.dark = false;
       this.login();
-      this.dateArr =["2020-07-02","2020-07-03","2020-07-04","2020-07-05"];
-      this.yArr = [5,2,3.2,8.2,11];
-      this.yName = "GGT";
-      this.yMin = 0;
-      this.yMax = 7;
-      this.unit = "L";
+
     },
     methods: {
       login: function () {
@@ -102,7 +105,8 @@
 
         const config = {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*'
           }
         }
         this.$axios.$post('/mobile-ui/refresh/oauth/token', qs.stringify(requestBody), config)
@@ -117,7 +121,8 @@
       fetch: function () {
         const config = {
           headers: {
-            'Authorization': 'Bearer '+this.token
+            'Authorization': 'Bearer '+this.token,
+            'Access-Control-Allow-Origin': '*'
           }
         }
 

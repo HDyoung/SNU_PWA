@@ -83,14 +83,14 @@ export default {
     credentials: false,
     proxy: false,
   },
-  proxy: {
-    '/mobile-ui': {
-      target: 'https://mcare.lemonhc.com',
-      pathRewrite: {
-        '/mobile-ui/^' : '/mobile-ui/refresh/oauth/token'
-      }
-    }
-  },
+  // proxy: {
+  //   '/mobile-ui/^': {
+  //     target: 'https://mcare.lemonhc.com',
+  //     pathRewrite: {
+  //       '/mobile-ui/^' : '/',
+  //     }
+  //   }
+  // },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
