@@ -1,7 +1,7 @@
 <template>
 <!--  <div>hello</div>-->
-  <div>
-    <b style="margin-left: 20px">{{yName}}</b>
+  <div style="margin-top: 10px; padding: 20px">
+    <b style="margin-left: 20px"><v-btn depressed small v-on:click="click(yName)">{{yName}} ({{range}})</v-btn></b>
     <line-chart v-if="loaded" :chartdata="chartdata" :options="options"/>
     <hr>
   </div>
@@ -20,6 +20,7 @@
       yMin: String,
       yMax: String,
       unit: String,
+      range: String,
     },
     data: () => ({
       loaded: false,
@@ -110,6 +111,11 @@
       }
       this.loaded = true;
     },
+    methods:{
+      click: function (name) {
+        window.open('https://terms.naver.com/search.nhn?query='+name+'&dicType=13','_blank')
+      }
+    }
   }
 </script>
 

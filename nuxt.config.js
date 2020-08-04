@@ -1,6 +1,19 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:1991'
+  },
+  pwa: {
+    icon: {
+      /* icon options */
+    },
+    manifest: {
+      name: 'My blood chart App',
+      lang: 'en',
+      start_url: "/inspire"
+    }
+  },
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
@@ -50,11 +63,13 @@ export default {
     '@nuxtjs/vuetify',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
+    '@nuxtjs/pwa',
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/pwa',
   ],
   /*
   ** vuetify module configuration
@@ -81,16 +96,17 @@ export default {
     baseURL: 'https://mcare.lemonhc.com',
     proxyHeaders: false,
     credentials: false,
-    proxy: false,
+    proxy: true,
   },
-  // proxy: {
-  //   '/mobile-ui/^': {
-  //     target: 'https://mcare.lemonhc.com',
-  //     pathRewrite: {
-  //       '/mobile-ui/^' : '/',
-  //     }
-  //   }
-  // },
+  proxy: {
+    '/inspire/fetch': {
+      target: 'http://localhost:1991',
+      browserBaseURL: 'http://localhost:1991',
+      pathRewrite: {
+        '/inspire/fetch' : '/inspire/fetch'
+      }
+    }
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
