@@ -2,14 +2,18 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:1991'
+    baseUrl: process.env.BASE_URL || 'https://www.regit.co.kr'
   },
   pwa: {
     icon: {
       /* icon options */
     },
+    workbox: {
+      /* workbox options */
+    },
     manifest: {
       name: 'My blood chart App',
+      short_name: 'blood chart',
       lang: 'en',
       start_url: "/inspire"
     }

@@ -1,8 +1,9 @@
 <template>
   <div class="main">
+    <v-container>얼릉 회복합시다 </v-container>
     <v-app v-if="loading">
       <v-main>
-        <v-container>얼릉 회복합시다 {{year}}-{{month}}-{{day}}</v-container>
+        <v-container><div><b>마지막 검사일: {{year}}-{{month}}-{{day}}</b></div></v-container>
 <!--        <button @click="$store.commit('increment')">{{ $store.state.token }}</button>-->
         <v-col cols="12">
           <v-autocomplete
@@ -33,13 +34,16 @@
           <v-btn class="ma-2" outlined color="teal" v-on:click="clear">Clear</v-btn>
         </div>
         <div>
-          <draw-chart v-for="item in selectedCodeToBlood" :dateArr ="item.xArr" :yArr="item.yArr" :yName="item.yNamfamily (3).pnge" :yMin="item.yMin" :yMax="item.yMax" :unit="item.unit" :range="item.range"></draw-chart>
+          <draw-chart v-for="item in selectedCodeToBlood" :dateArr ="item.xArr" :yArr="item.yArr" :yName="item.yName" :yMin="item.yMin" :yMax="item.yMax" :unit="item.unit" :range="item.range"></draw-chart>
 <!--          <draw-chart :dateArr ="dateArr" :yArr="yArr" :yName="yName" :yMin="yMin" :yMax="yMax" :unit="unit"></draw-chart>-->
 <!--          <draw-chart :dateArr ="dateArr" :yArr="yArr" :yName="yName" :yMin="yMin" :yMax="yMax" :unit="unit"></draw-chart>-->
 <!--          <draw-chart :dateArr ="dateArr" :yArr="yArr" :yName="yName" :yMin="yMin" :yMax="yMax" :unit="unit"></draw-chart>-->
 <!--          <draw-chart :dateArr ="dateArr" :yArr="yArr" :yName="yName" :yMin="yMin" :yMax="yMax" :unit="unit"></draw-chart>-->
         </div>
       </v-main>
+    </v-app>
+    <v-app v-else>
+      <img src="../static/Spin-1s-200px.svg" alt="My Awesome SVG">
     </v-app>
   </div>
 </template>
@@ -59,7 +63,7 @@
       DrawChart
     },
     data: () => ({
-      loading: true,
+      loading: false,
       selectedLiver: [],
       selectedNotLiver: [],
       notliverItems: [],
@@ -87,9 +91,9 @@
       // });
 
       let now = new Date();
-      this.year = now.getFullYear();
-      this.month = now.getMonth()+1;
-      this.day = now.getDate();
+      // this.year = now.getFullYear();
+      // this.month = now.getMonth()+1;
+      // this.day = now.getDate();
       this.$vuetify.theme.dark = false;
       this.fetch();
 
@@ -132,6 +136,9 @@
                 let yArr = [];
                 for(let i=0; i<dateArr.length; i++){
                   let d = new Date(Number(dateArr[i]));
+                  this.year = d.getFullYear();
+                  this.month = d.getMonth()+1;
+                  this.day = d.getDate();
                   let x = (d.getMonth()+1)+'-'+d.getDate()
 
                   let v = item.time[dateArr[i]]
@@ -149,6 +156,11 @@
                 let name = keys[idx];
                 if(name in this.liverCode) continue;
                 this.notliverItems.push(name)
+                this.selectedNotLiver.push(name)
+              }
+              //init
+              for(let live in this.liverCode){
+                this.selectedLiver.push(live)
               }
               console.log(this.codeToBlood);
               this.loading = true;

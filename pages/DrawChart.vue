@@ -1,7 +1,7 @@
 <template>
 <!--  <div>hello</div>-->
-  <div style="margin-top: 10px; padding: 20px">
-    <b style="margin-left: 20px"><v-btn depressed small v-on:click="click(yName)">{{yName}} ({{range}})</v-btn></b>
+  <div style="margin-top: 10px; padding-right: 20px;">
+    <b style="margin-left: 20px"><v-btn depressed small v-on:click="click(yName)">{{yName}} ({{range}} {{unit}})</v-btn></b>
     <line-chart v-if="loaded" :chartdata="chartdata" :options="options"/>
     <hr>
   </div>
@@ -77,6 +77,7 @@
             data: maxArr
           }]}
       this.options={
+        maintainAspectRatio: false,
         scales: {
           xAxes: [{
             gridLines: {
@@ -102,7 +103,7 @@
               borderDash: [2, 5],
             },
             scaleLabel: {
-              display: true,
+              display: false,
               labelString: this.unit,
               fontColor: "green"
             }
