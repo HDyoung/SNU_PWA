@@ -32,6 +32,8 @@
         <div class="my-2">
           <v-btn class="ma-2" outlined color="indigo" v-on:click="apply">Apply</v-btn>
           <v-btn class="ma-2" outlined color="teal" v-on:click="clear">Clear</v-btn>
+          <v-btn class="ma-2" outlined color="blue-grey" v-on:click="clickLiver">간 수치</v-btn>
+          <v-btn class="ma-2" outlined color="blue-grey" v-on:click="clickNotLiver">모든 수치</v-btn>
         </div>
         <div>
           <draw-chart v-for="item in selectedCodeToBlood" :dateArr ="item.xArr" :yArr="item.yArr" :yName="item.yName" :yMin="item.yMin" :yMax="item.yMax" :unit="item.unit" :range="item.range"></draw-chart>
@@ -147,14 +149,39 @@
                 }
                 item.yArr = yArr;
                 item.xArr = xArr;
+                item.dateArr = dateArr;
                 this.codeToBlood[code] = item;
               }
 
               //init notliverItems
-              let keys = Object.keys(this.codeToBlood);
+              let keys = Object.keys(this.codeToBlood).sort(function (a,b) {
+                let aLast = map[a].dateArr[map[a].dateArr.length-1];
+                let bLast = map[b].dateArr[map[b].dateArr.length-1];
+                if(bLast != aLast){
+                  return bLast - aLast
+                }
+                let aLastVal = map[a].yArr[map[a].yArr.length-1];
+                let bLastVal = map[b].yArr[map[b].yArr.length-1];
+
+                let avga = (map[a].yMax + map[a].yMin)/2;
+                let avgb = (map[b].yMax + map[b].yMin)/2;
+                let diffa = 0;
+                let diffb = 0;
+                if(aLastVal > map[a].yMax){
+                  diffa = aLastVal -  map[a].yMax;
+                }else if(aLastVal < map[a].yMin){
+                  diffa = map[a].yMin- aLastVal;
+                }
+                if(bLastVal > map[b].yMax){
+                  diffb = bLastVal -  map[b].yMax;
+                }else if(bLastVal < map[b].yMin){
+                  diffb = map[b].yMin- bLastVal;
+                }
+                return diffb/(map[b].yMax- map[b].yMin) - diffa/(map[a].yMax- map[a].yMin);
+              });
               for(let idx in keys){
                 let name = keys[idx];
-                if(name in this.liverCode) continue;
+                if(name in this.liverCode || name == "eGFR(MDRD) (사구체 여과율 (IDMS MDRD))") continue;
                 this.notliverItems.push(name)
                 this.selectedNotLiver.push(name)
               }
@@ -184,6 +211,24 @@
         this.selectedCodeToBlood = [];
         this.selectedLiver=  [];
         this.selectedNotLiver = [];
+      },
+      clickLiver: function () {
+        if(this.selectedLiver.length == 0){
+          for(let i=0; i<this.liverItems.length; i++){
+            this.selectedLiver.push(this.liverItems[i]);
+          }
+        }else{
+          this.selectedLiver = []
+        }
+      },
+      clickNotLiver: function () {
+        if(this.selectedNotLiver.length == 0){
+          for(let i=0; i<this.notliverItems.length; i++){
+            this.selectedNotLiver.push(this.notliverItems[i]);
+          }
+        }else{
+          this.selectedNotLiver = []
+        }
       }
     }
   }
